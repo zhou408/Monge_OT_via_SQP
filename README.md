@@ -34,7 +34,7 @@ J[s] = 0.5 * E_{X~f}[(s(X)-X)^2]
 
 McCann-style sections also include a non-quadratic transport cost (`sqrt(2|x-s(x)|)`), smoothed in code for numerical stability.
 
-### What SQP Is (Briefly)
+### What SQP Is
 
 SQP (Sequential Quadratic Programming) solves a nonlinear constrained problem by repeating:
 
@@ -43,7 +43,7 @@ SQP (Sequential Quadratic Programming) solves a nonlinear constrained problem by
 3. solve the resulting KKT linear system for a step,
 4. update primal/dual variables (optionally with trust-clip or line search).
 
-### How The Original Problem Is Approximated Here
+### How The Original Problem Is Approximated with SQP
 
 The original problem is infinite-dimensional (optimize over functions `s`). In these scripts it is approximated as finite-dimensional optimization:
 
@@ -87,6 +87,8 @@ with optional trust-clipping / fixed-step / line-search updates.
   - Uniform -> Beta.
 - `experiments/mccann_concave_experiments.py`
   - McCann-style concave / nonconvex examples (piecewise and polynomial variants).
+  - Implementation based on Robert J. McCann, *Exact solutions to the transportation problem on the line*:
+    https://royalsocietypublishing.org/rspa/article-abstract/455/1984/1341/80376/Exact-solutions-to-the-transportation-problem-on
 
 ## How to Run
 
