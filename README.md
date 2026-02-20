@@ -13,37 +13,25 @@ The code compares analytic maps (when available) against SQP-learned maps across
 
 ## Mathematical Formulation
 
-The main constrained problem used across scripts is:
+Main constrained problem used across scripts:
 
-\[
-\min_{\theta}\; J(\theta)=\frac12\,\mathbb E_{X\sim f}\big[(s_\theta(X)-X)^2\big]
-\quad\text{s.t.}\quad
-\zeta(y;\theta)=P_f(s_\theta)(y)-g(y)=0
-\]
+```text
+min over theta: J(theta) = 0.5 * E_{X~f}[(s_theta(X) - X)^2]
+subject to:     zeta(y;theta) = P_f(s_theta)(y) - g(y) = 0
+```
 
-where `P_f(s)` is the pushforward density from change-of-variables:
+Pushforward density (change of variables):
 
-\[
-P_f(s)(y)=\sum_{x:\,s(x)=y}\frac{f(x)}{|s'(x)|}.
-\]
+```text
+P_f(s)(y) = sum over x such that s(x)=y of f(x) / |s'(x)|
+```
 
-On a grid, constraints are enforced pointwise and SQP solves regularized KKT systems of the form:
+On a grid, constraints are enforced pointwise, and each SQP step solves a regularized KKT system:
 
-\[
-\begin{bmatrix}
-H & A^\top \\
-A & -\rho I
-\end{bmatrix}
-\begin{bmatrix}
-\Delta\theta \\
-w
-\end{bmatrix}
-=
--\begin{bmatrix}
-\nabla_\theta \mathcal L \\
-\zeta
-\end{bmatrix}
-\]
+```text
+[ H    A^T ] [Delta_theta] = -[ grad_theta L ]
+[ A   -rhoI] [    w      ]   [    zeta      ]
+```
 
 with optional trust-clipping / fixed-step / line-search updates.
 
