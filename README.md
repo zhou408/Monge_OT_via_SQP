@@ -13,11 +13,11 @@ The code compares analytic maps (when available) against SQP-learned maps across
 
 ## Mathematical Formulation
 
-Main constrained problem used across scripts:
+At the continuous level, this starts from a Monge-style constrained optimization over maps `s`:
 
 ```text
-min over theta: J(theta) = 0.5 * E_{X~f}[(s_theta(X) - X)^2]
-subject to:     zeta(y;theta) = P_f(s_theta)(y) - g(y) = 0
+min over maps s:  J[s] = integral c(x, s(x)) f(x) dx
+subject to:       P_f(s)(y) = g(y)
 ```
 
 Pushforward density (change of variables):
@@ -26,7 +26,43 @@ Pushforward density (change of variables):
 P_f(s)(y) = sum over x such that s(x)=y of f(x) / |s'(x)|
 ```
 
-On a grid, constraints are enforced pointwise, and each SQP step solves a regularized KKT system:
+In most experiments, `c(x,s(x)) = 0.5 * (s(x)-x)^2`, so:
+
+```text
+J[s] = 0.5 * E_{X~f}[(s(X)-X)^2]
+```
+
+McCann-style sections also include a non-quadratic transport cost (`sqrt(2|x-s(x)|)`), smoothed in code for numerical stability.
+
+### What SQP Is (Briefly)
+
+SQP (Sequential Quadratic Programming) solves a nonlinear constrained problem by repeating:
+
+1. linearize constraints near current parameters,
+2. locally quadratic-approximate the objective/Lagrangian,
+3. solve the resulting KKT linear system for a step,
+4. update primal/dual variables (optionally with trust-clip or line search).
+
+### How The Original Problem Is Approximated Here
+
+The original problem is infinite-dimensional (optimize over functions `s`). In these scripts it is approximated as finite-dimensional optimization:
+
+1. **Map parameterization**
+   - affine/quadratic maps, or
+   - monotone piecewise-linear maps with slopes `a_i = exp(gamma_i) > 0`.
+   This gives a finite parameter vector `theta`.
+
+2. **Objective approximation**
+   - `J(theta)` is evaluated with analytic moments when available (some affine/quadratic cases), or
+   - numerical quadrature / quantile-grid averaging for piecewise-linear maps.
+   - solvers typically use Gauss-Newton style Hessian approximations for stability.
+
+3. **Constraint discretization**
+   - instead of enforcing `P_f(s)=g` for all `y`, enforce residuals on a finite grid:
+   - `zeta_j(theta) = P_f(s_theta)(y_j) - g(y_j) = 0`.
+   - Jacobians are analytic in several scripts and finite-difference in others.
+
+With these approximations, each SQP step solves a regularized KKT system:
 
 ```text
 [ H    A^T ] [Delta_theta] = -[ grad_theta L ]
