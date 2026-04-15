@@ -100,6 +100,18 @@ Paper relation:
 
 - Part of the repository’s paper experiments and application-oriented examples.
 
+## Coulomb repulsive-cost experiment
+
+### `experiments2/coulumb/experiment_coulomb_sce.py`
+
+Role:
+
+- Coulomb repulsive-cost experiment for strongly correlated electrons (SCE).
+
+Paper relation:
+
+- Directly associated with `SQP.tex`, physics-inspired transport costs section.
+
 ## Helper modules
 
 ### `experiments/plotting_helpers.py`

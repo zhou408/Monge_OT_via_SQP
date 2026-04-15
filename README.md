@@ -24,6 +24,7 @@ project_guide/
     nonmonotone/
     plotting_helpers.py
   experiments2/
+    coulumb/
     labor_market/
     lagrangian/
     lens/
@@ -106,6 +107,8 @@ with optional trust-clipping / fixed-step / line-search updates.
 
 ## Experiments included
 
+### `experiments/`
+
 - `experiments/gaussian_linear_experiments.py`
   - Gaussian -> Gaussian with affine map.
 - `experiments/gaussian_quadratic_experiments.py`
@@ -120,64 +123,36 @@ with optional trust-clipping / fixed-step / line-search updates.
   - Uniform -> Beta.
 - `experiments/mccann_concave_experiments.py`
   - McCann-style concave / nonconvex examples (piecewise and polynomial variants).
-  - Implementation based on Robert J. McCann, *Exact solutions to the transportation problem on the line*:
+  - Implementation of the example from Robert J. McCann, *Exact solutions to the transportation problem on the line*:
     https://royalsocietypublishing.org/rspa/article-abstract/455/1984/1341/80376/Exact-solutions-to-the-transportation-problem-on
+  - Reference:
+    McCann, R. J. (1999). Exact solutions to the transportation problem on the line. *Proceedings of the Royal Society of London. Series A: Mathematical, Physical and Engineering Sciences*, 455(1984), 1341–1380. doi:10.1098/rspa.1999.0364.
 
-## Experiments
-
-### `experiments/lens`
-
-- `experiment_lens_sqp_gpu.py`
-- `freeform_lens_experiment.py`
-
-Experiments for lens and reflector transport, including the `S^1` reflector setting.
-
-### `experiments/lagrangian`
-
-- `experiment_lagrangian_sqp.py`
-
-Experiments for Lagrangian obstacle-cost optimal transport, where the transport cost is defined through an inner path optimization problem.
-
-### `experiments/nonmonotone`
-
-- `nonmonotone_transport_sqp.py`
-
-Experiments for displacement-maximizing and non-monotone transport under concave costs.
-
-### `experiments/mccann`
-
-- `experiment_mccann.py`
-- `compute_true_optimal.py`
-- `find_optimal_kink.py`
-
-Experiments and supporting analysis for the McCann concave-cost example.
-
-### `experiments/labor_market`
-
-- `labor_market_experiment.py`
-
-Labor-market matching experiments formulated through the same transport framework.
-
-### `experiments2`
-
-This repository also contains a second set of experiment scripts in `experiments2/`,
+### `experiments2/`
 
 - `experiments2/lens/experiment_lens_sqp_gpu.py`
-  - Main SQP- and GPU-oriented lens and reflector experiment. This manifests the optical path-cost setting from `SQP.tex`, where the cost is given by the freeform illumination / reflector travel time and the Monge map assigns rays deterministically.
+  - SQP- and GPU-oriented lens / reflector experiment, matching the optical transport setting in `SQP.tex`.
 - `experiments2/lens/freeform_lens_experiment.py`
-  - Freeform lens and reflector design variant exploring the same optical transport model with additional geometry or design flexibility.
+  - Freeform lens / reflector design variant exploring the same physical optical cost model.
+  - Reference for reflector antenna: Wang, X.-J. (2004). On the design of a reflector antenna II. *Calculus of Variations and Partial Differential Equations*, 20(3), 329–341. doi:10.1007/s00526-003-0239-4.
 - `experiments2/lagrangian/experiment_lagrangian_sqp.py`
-  - Lagrangian obstacle-cost experiment that uses an inner path optimization to compute transport costs through a potential landscape, matching the Hamilton-Jacobi / action-cost setting described in `SQP.tex`.
+  - Lagrangian obstacle-cost experiment using inner path optimization costs.
+  - Reference: Pooladian, A.-A., Finlay, C., & Oberman, A. (2024). Neural Optimal Transport with Lagrangian Costs. *arXiv preprint arXiv:2406.00288*.
 - `experiments2/nonmonotone/nonmonotone_transport_sqp.py`
-  - Non-monotone transport experiment for displacement-maximizing concave costs, following the Beta-to-Beta nonconvex example family where the optimal map may violate simple monotonicity structure.
+  - Non-monotone transport experiment for displacement-maximizing concave costs.
 - `experiments2/mccann/experiment_mccann.py`
-  - McCann-style concave-cost experiment studying deterministic transport under concave interaction costs and piecewise-structured solutions.
+  - Main McCann concave-cost experiment for piecewise-structured deterministic transport.
 - `experiments2/mccann/compute_true_optimal.py`
-  - Auxiliary validation script that computes a reference Kantorovich/LP optimal solution against which the Monge map can be compared.
+  - Validation helper computing reference optimal solutions.
 - `experiments2/mccann/find_optimal_kink.py`
-  - Structural analysis helper for identifying piecewise-affine kinks in the McCann model.
+  - Structural analysis helper for McCann kink locations.
 - `experiments2/labor_market/labor_market_experiment.py`
-  - Labor-market matching experiment that applies the Monge OT framework to deterministic worker–job assignment, reflecting the matching motivation in `SQP.tex`.
+  - Labor-market matching experiment applying the Monge OT framework.
+- `experiments2/coulumb/experiment_coulomb_sce.py`
+  - Coulomb repulsive-cost experiment for strongly correlated electrons (SCE), implementing the self-transport with 1/|x-y| cost from `SQP.tex`.
+  - Reference: Colombo, M., De Pascale, L., & Di Marino, S. (2015). Multimarginal optimal transport maps for one-dimensional repulsive costs. *Canadian Journal of Mathematics*, 67(2), 350–368. doi:10.4153/CJM-2014-011-x.
+
+
 
 ## How to run
 

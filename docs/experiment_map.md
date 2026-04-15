@@ -97,6 +97,20 @@ Notes:
 - This script presents the transport framework in an economic matching setting.
 - Both folders contain the same core labor-market experiment.
 
+## Coulomb repulsive-cost experiment
+
+File:
+
+- `../experiments2/coulumb/experiment_coulomb_sce.py`
+
+Paper context:
+
+- Coulomb repulsive costs in `SQP.tex`, physics-inspired transport costs section.
+
+Notes:
+
+- This script implements the strongly correlated electrons (SCE) self-transport problem with 1/|x-y| cost, as described in the DFT setting.
+
 ## Helper files
 
 File:

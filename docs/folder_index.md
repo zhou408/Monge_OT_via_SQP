@@ -40,6 +40,7 @@ Purpose:
 
 Subfolders:
 
+- `coulumb`
 - `lens`
 - `lagrangian`
 - `nonmonotone`
